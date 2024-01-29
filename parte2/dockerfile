@@ -1,0 +1,17 @@
+FROM php:7.4-apache
+
+WORKDIR /var/www/html
+COPY . /var/www/html
+
+RUN apt-get update
+
+# Drivers PDO E PGSQL
+RUN apt-get install -y libpq-dev \
+  && docker-php-ext-configure pgsql -with-pgsql=/usr/local/pgsql \
+  && docker-php-ext-install pdo pdo_pgsql pgsql
+
+#1. Baixar a imagem do php, usar este comando no terminal - docker pull php
+#3. Abrir com o caminho da pasta e o codigo no terminal e dar o comando para construir a imagem -> docker build -t nomedaimagem .
+#4.  após isso subir o container com a imagem -> docker run -dp 8080:80 nomedaimagem
+#5.  para ver se o container esta sendo executado -> docker ps para ver os que não estão sendo executados -> docker ps -a
+

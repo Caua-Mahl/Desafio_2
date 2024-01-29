@@ -1,0 +1,21 @@
+services:
+  php:
+    build:
+      context: /home/imply/CauaProj/Desafio_2/parte2
+      dockerfile: ./dockerfile
+    ports:
+      - "8100:80"
+    volumes:
+      - ./www:/var/www/html
+    links: 
+      - "db:database"
+  db:
+    image: postgres
+    restart: always
+    environment:
+      POSTGRES_PASSWORD: exemplo
+    ports:
+      - "5432:5432"
+
+    
+
