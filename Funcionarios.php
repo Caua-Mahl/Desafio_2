@@ -53,4 +53,11 @@ class Funcionarios
     {
         $this->salario = $salario;
     }
+
+    public function listarFuncionarios(): array{
+
+    }
+    public function listarFuncionario($id): array{
+
+    }
 }
