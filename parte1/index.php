@@ -1,14 +1,14 @@
 <?php
 
-require 'vendor\autoload.php';
+require_once 'vendor\autoload.php';
+require_once 'classes/LeitorCsv.php';
+require_once 'classes/Vendas.php';
 require 'classes/Produto.php';
-require 'classes/Vendas.php';
 
 $vendasCsv      = fopen('csv\orders.csv', "r");
 $produtosCsv   = fopen('csv\products.csv', "r");
-$a=new Produto($produtosCsv);
-
-
+$a=new LeitorCsv($produtosCsv);
+$a = $a->getProdutos();
 /*echo "<pre>";
 var_dump(fgetcsv($vendas,1000,","));
 var_dump(fgetcsv($produtos,1000,","));
@@ -21,7 +21,7 @@ foreach ($linhas as $linha) {
 
 
 echo "<pre>";
-var_dump($a);
+var_dump( $a[0]);
 
 fclose($vendasCsv);
 fclose($produtosCsv);
