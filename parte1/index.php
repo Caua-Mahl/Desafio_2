@@ -61,20 +61,19 @@ foreach ($produtosVendas as $linha) {
 }
 
 //enviando csv para o gmail
-$mail = new PHPMailer(true);
-// Configurações do servidor
-$mail->isSMTP();        //Devine o uso de SMTP no envio
+$mail             = new PHPMailer(true);
+$mail->isSMTP();    //Devine o uso de SMTP no envio
 $mail->SMTPAuth   = true; //Habilita a autenticação SMTP
 $mail->Username   = 'testecauam@gmail.com';
 $mail->Password   = 'djow udyr trvo etew ';
-// Criptografia do envio SSL também é aceito
-$mail->SMTPSecure = 'tls';
-// Informações específicadas pelo Google
-$mail->Host = 'smtp.gmail.com';
-$mail->Port = 587;
+$mail->SMTPSecure = 'tls'; // Criptografia do envio SSL também é aceito
+$mail->Host       = 'smtp.gmail.com'; // Informações específicadas pelo Google
+$mail->Port       = 587;
+
 // Define o remetente e destinatário
 $mail->setFrom('testecauam@gmail.com', 'Caua');
 $mail->addAddress('testecauam@gmail.com', 'Caua');
+
 // Conteúdo da mensagem
 $mail->Subject = 'Desafio2';
 $mail->Body    = 'Eai';
