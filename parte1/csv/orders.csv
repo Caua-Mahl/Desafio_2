@@ -1,4 +1,4 @@
-order_id,product_id,date,quantity
+orderID,productID,date,quantity
 41fd82a9-2708-49d2-bd3d-de309c91b2dc,55a5fb22-58e6-455c-a946-7ff3a663a09a,"2017-02-28 01:53",29
 41fd82a9-2708-49d2-bd3d-de309c91b2dc,97fc8dd1-007b-43d9-a002-b55af1a0fae2,"2017-02-28 01:53",34
 d6ca61ab-6291-401e-ba87-c3d2101a7418,55a5fb22-58e6-455c-a946-7ff3a663a09a,"2017-04-25 08:06",49

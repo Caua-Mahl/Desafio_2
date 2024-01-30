@@ -1,37 +1,45 @@
-<?php 
-class Produto {
-    private string $product_id;
+<?php
+class Produto
+{
+    private string $productID;
     private string $name;
     private string $price;
 
-    public function __construct(string $product_id, string $name, string $price) {
-        $this->product_id = $product_id;
+    public function __construct(string $productID, string $name, string $price)
+    {
+        $this->productID = $productID;
         $this->name       = $name;
         $this->price      = $price;
-        echo "$name criado! <br>";   
+        //echo "$name criado! <br>";   
     }
 
-    public function getProduct_id() {
-        return $this->product_id;
+    public function getProductID()
+    {
+        return $this->productID;
     }
 
-    public function getName() {
+    public function getName()
+    {
         return $this->name;
     }
-    
-    public function getPrice() {
+
+    public function getPrice()
+    {
         return $this->price;
     }
 
-    public function setProduct_id(string $product_id) {
-        $this->product_id = $product_id;
+    public function setProductID(string $productID)
+    {
+        $this->productID = $productID;
     }
 
-    public function setName(string $name) {
+    public function setName(string $name)
+    {
         $this->name = $name;
     }
 
-    public function setPrice(string $price) {
+    public function setPrice(string $price)
+    {
         $this->price = $price;
     }
 }
