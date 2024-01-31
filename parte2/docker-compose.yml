@@ -1,21 +1,23 @@
 services:
-  db:
-    image: postgres
-    restart: always
-    environment:
-      POSTGRES_PASSWORD: exemplo
-    ports:
-      - "8101:5432"
   php:
     build:
       context: /home/imply/CauaProj/Desafio_2/parte2
       dockerfile: ./dockerfile
     ports:
-      - "8100:80"
+      - "80:80"
+      - "443:443"
     volumes:
       - ./www:/var/www/html
     links: 
-      - "db:database"
-
+      - db
+  postgres:
+    image: postgres:latest
+    container_name: postgres
+    restart: always
+    environment:
+      POSTGRES_PASSWORD: exemplo
+    ports:
+      - "5432:5432"
     
+#docker compose up -d  docker compose stop e docker compose down
 
