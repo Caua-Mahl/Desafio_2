@@ -1,5 +1,4 @@
 <?php 
-// optei por static pois assim não preciso instanciar pra usar o get
 class RequisitorCurl {
     private static $base = 'https://pokeapi.co/api/v2';
 
@@ -16,6 +15,7 @@ class RequisitorCurl {
 
         curl_close($ch);
         $decoded = json_decode($response, true);
+
         if (!$decoded) {
             http_response_code(404);
             echo json_encode(['message' => 'Data not found']);
@@ -23,14 +23,5 @@ class RequisitorCurl {
         }
 
         return $decoded;
-    }
-
-    // não necessários pro funcionamento do código agora, mas podem ser úteis no futuro
-    public static function getBase(): string {
-        return static::$base;
-    }
-
-    public static function setBase(string $base): void {
-        static::$base = $base;
     }
 }
