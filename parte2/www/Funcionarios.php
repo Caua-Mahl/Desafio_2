@@ -16,6 +16,24 @@ class Funcionarios
         $this->salario = $salario;
     }
 
+    //CRUD
+
+    public function criar($conexao): void
+    {
+        $sql       = "INSERT INTO funcionarios (nome, genero, idade, salario) VALUES ('$this->nome', '$this->genero', '$this->idade', '$this->salario')";
+        $resultado = pg_query($conexao, $sql);
+        if ($resultado === false) {
+            die("Error: " . pg_last_error());
+        }
+        echo "Funcionario criado com sucesso";
+    }
+
+    
+
+
+
+
+
     public function getId(): string
     {
         return $this->id;

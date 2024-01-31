@@ -29,7 +29,6 @@
         pg_close($this->conn) or die("Nao foi possivel desconectar ao Banco de Dados");
         echo "Desconecção bem sucedida";
     }
-
  }
 
  
