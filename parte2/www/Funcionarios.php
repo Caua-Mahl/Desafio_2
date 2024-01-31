@@ -2,7 +2,7 @@
 
 class Funcionarios
 {
-    private string $id;
+    private int $id;
     private string $nome;
     private string $genero;
     private string $idade;
@@ -16,33 +16,43 @@ class Funcionarios
         $this->salario = $salario;
     }
 
-    //CRUD
+    //CRUD 
 
-    public function criar($conexao): void
-    {
-        $sql       = "INSERT INTO funcionarios (nome, genero, idade, salario) VALUES ('$this->nome', '$this->genero', '$this->idade', '$this->salario')";
+    public function criar($conexao): void {
+        $sql       = "INSERT INTO funcionarios (nome, genero, idade, salario) 
+                      VALUES ('$this->nome', '$this->genero', '$this->idade', '$this->salario')";
+        $resultado = pg_query($conexao, $sql); 
+        if ($resultado === false) {
+            die("Error: " . pg_last_error());
+        }
+        echo "$this->nome foi adicionado(a) <br>";
+         $this->ultimoIdInserido($conexao);
+    }
+
+    private function ultimoIdInserido($conexao): void {
+        $sql       = "SELECT CURRVAL('funcionarios_id_seq')";
         $resultado = pg_query($conexao, $sql);
         if ($resultado === false) {
             die("Error: " . pg_last_error());
         }
-        echo "Funcionario criado com sucesso";
+        $ultimoId = pg_fetch_array($resultado);
+        $this->id = $ultimoId["currval"];
     }
 
-    public function listarTodos($conexao): void
-    {
+    public static function listarTodos($conexao): void {
         $sql       = "SELECT * FROM funcionarios";
         $resultado = pg_query($conexao, $sql);
+
         if ($resultado === false) {
             die("Error: " . pg_last_error());
         }
 
-        while ($linha = pg_fetch_assoc($resultado)) {
-            echo "id: " . $linha["id"] . " - Nome: " . $linha["nome"] . " - Genero: " . $linha["genero"] . " - Idade: " . $linha["idade"] . " - Salario: " . $linha["salario"] . "<br>";
+        while ($funcionario = pg_fetch_assoc($resultado)) {
+            echo "id: " . $funcionario["id"] . " - Nome: " . $funcionario["nome"] . " - Genero: " . $funcionario["genero"] . " - Idade: " . $funcionario["idade"] . " - Salario: " . $funcionario["salario"] . "<br>";
         }
     }
 
-    public function listarFuncionario($conexao, $id): void
-    {
+    public static function listarFuncionario($conexao, $id): void {
         $sql       = "SELECT * FROM funcionarios WHERE id = '$id'";
         $resultado = pg_query($conexao, $sql);
         if ($resultado === false) {
@@ -50,11 +60,31 @@ class Funcionarios
         }
 
         $funcionario = pg_fetch_assoc($resultado);
-        echo "id: " . $funcionario["id"] . " - Nome: " . $funcionario["nome"] . " - Genero: " . $funcionario["genero"] . " - Idade: " . $funcionario["idade"] . " - Salario: " . $funcionario["salario"] . "<br>";
-
-        
+        echo "Você buscou pelo $id e obteve a seguinte resposta:<br>
+        - id: "      . $funcionario["id"]           . " 
+        - Nome: "    . $funcionario["nome"]       . " 
+        - Genero: "  . $funcionario["genero"]   . " 
+        - Idade: "   . $funcionario["idade"]     . " 
+        - Salario: " . $funcionario["salario"] . "<br>";
     }
-    
+
+    public static function deletarTodos($conexao): void {
+        $sql       = "DELETE FROM funcionarios";
+        $resultado = pg_query($conexao, $sql);
+        if ($resultado === false) {
+            die("Error: " . pg_last_error());
+        }
+        echo "Todos os funcionarios foram deletados <br><br>";
+    }
+
+    public static function deletarFuncionario($conexao, $id): void {
+        $sql       = "DELETE FROM funcionarios WHERE id = '$id'";
+        $resultado = pg_query($conexao, $sql);
+        if ($resultado === false) {
+            die("Error: " . pg_last_error());
+        }
+        echo "O funcionario $id foi deletado <br><br>";
+    }
 
     public function getId(): string
     {
@@ -76,7 +106,10 @@ class Funcionarios
     {
         return $this->salario;
     }
-
+    public function setId(int $id): void
+    {
+        $this->id = $id;
+    }
     public function setNome(string $nome): void
     {
         $this->nome = $nome;

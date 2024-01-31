@@ -20,14 +20,19 @@
 
     public function conectar(): void
     {
-        $this->conn = pg_connect($this->infos_string) or die("Nao foi possivel conectar ao Banco de Dados");
-        echo "Conecção bem sucedida";
+        $this->conn = pg_connect($this->infos_string) or die("Nao foi possivel conectar ao Banco de Dados  <br><br>");
+        echo "Conecção bem sucedida  <br><br>";
     }
 
     public function desconectar(): void
     {
-        pg_close($this->conn) or die("Nao foi possivel desconectar ao Banco de Dados");
+        pg_close($this->conn) or die("Nao foi possivel desconectar ao Banco de Dados  <br><br>");
         echo "Desconecção bem sucedida";
+    }
+
+    public function getConn()
+    {
+        return $this->conn;
     }
  }
 

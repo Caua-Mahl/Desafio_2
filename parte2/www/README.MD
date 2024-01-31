@@ -1,4 +1,4 @@
-CREATE TABLE publicc.funcionarios (
+CREATE TABLE public.funcionarios (
     id serial4 NOT NULL,
     nome varchar(100) NULL,
     genero varchar(10) NULL,
