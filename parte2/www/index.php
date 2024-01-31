@@ -1,17 +1,15 @@
 <?php
 require "Funcionarios.php";
-//  jdbc:postgresql://localhost:5432/postgres
 
-$server = "localhost";
-$user   = "postgres";
+$db   = "postgres";
 $pass   = "exemplo";
-$port   = "8101";
+$port   = "5432";
 
-$infos_string = "host=$server port=$port dbname=postgres user=$user password=$pass";
+$infos_string = "host=$db port=$port dbname=$db user=$db password=$pass";
 
 $conn = pg_connect($infos_string) or die("Nao foi possivel conectar ao Banco de Dados");
-echo "Conecçao bem sucedida";
+echo "Conecção bem sucedida";
 
 pg_close($conn) or die("Nao foi possivel desconectar ao Banco de Dados");
-echo "Desconecçao bem sucedida";
+echo "Desconecção bem sucedida";
 

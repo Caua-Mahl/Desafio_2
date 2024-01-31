@@ -1,15 +1,15 @@
 services:
   php:
     build:
-      context: /home/imply/CauaProj/Desafio_2/parte2
-      dockerfile: ./dockerfile
+      context: .
+      dockerfile: dockerfile
     ports:
       - "80:80"
       - "443:443"
     volumes:
       - ./www:/var/www/html
     links: 
-      - db
+      - postgres
   postgres:
     image: postgres:latest
     container_name: postgres
