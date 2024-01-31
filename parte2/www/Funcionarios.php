@@ -28,11 +28,33 @@ class Funcionarios
         echo "Funcionario criado com sucesso";
     }
 
+    public function listarTodos($conexao): void
+    {
+        $sql       = "SELECT * FROM funcionarios";
+        $resultado = pg_query($conexao, $sql);
+        if ($resultado === false) {
+            die("Error: " . pg_last_error());
+        }
+
+        while ($linha = pg_fetch_assoc($resultado)) {
+            echo "id: " . $linha["id"] . " - Nome: " . $linha["nome"] . " - Genero: " . $linha["genero"] . " - Idade: " . $linha["idade"] . " - Salario: " . $linha["salario"] . "<br>";
+        }
+    }
+
+    public function listarFuncionario($conexao, $id): void
+    {
+        $sql       = "SELECT * FROM funcionarios WHERE id = '$id'";
+        $resultado = pg_query($conexao, $sql);
+        if ($resultado === false) {
+            die("Error: " . pg_last_error());
+        }
+
+        $funcionario = pg_fetch_assoc($resultado);
+        echo "id: " . $funcionario["id"] . " - Nome: " . $funcionario["nome"] . " - Genero: " . $funcionario["genero"] . " - Idade: " . $funcionario["idade"] . " - Salario: " . $funcionario["salario"] . "<br>";
+
+        
+    }
     
-
-
-
-
 
     public function getId(): string
     {
