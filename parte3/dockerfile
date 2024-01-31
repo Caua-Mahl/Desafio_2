@@ -17,3 +17,6 @@ EXPOSE 80
 
 # Start PHP server
 CMD ["php", "-S", "0.0.0.0:80"]
+
+#  build -t nomedaimagem .
+#  docker run -dp 8080:80 nomedaimagem

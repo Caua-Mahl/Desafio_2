@@ -1,6 +1,6 @@
 <?php
 
-//biblioteca 
+//biblioteca email
 require 'vendor/autoload.php';
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\Exception;
@@ -25,8 +25,6 @@ $vendas      = $vendas->getVendas();
 $produtosVendas = array();
 $novoCsv        = fopen('csv/products_orders.csv', "w");
 
-echo "<pre>";
-
 for ($produto = 0; $produto < count($produtos); $produto++) {
     $produtosVendas[$produto]["total_vendido"] = 0; // declarei antes pois vai ser somado depois
     $produtosVendas[$produto]["Data_ultima_venda"][0]=0;
@@ -34,7 +32,7 @@ for ($produto = 0; $produto < count($produtos); $produto++) {
         if ($vendas[$venda]->getProductID() == $produtos[$produto]->getProductID()) {
             //ID do produto, preço unitário, data da última venda, quantidade total vendida e valor total vendido
             $produtosVendas[$produto]["product_ID"]                = $produtos[$produto]->getProductID();
-            //$produtosVendas[$produto]["nome"]                      = $produtos[$produto]->getName();
+            //$produtosVendas[$produto]["nome"]                    = $produtos[$produto]->getName();
             $produtosVendas[$produto]["preço_unitario"]            = $produtos[$produto]->getPrice();
             $produtosVendas[$produto]["Data_ultima_venda"][$venda] = $vendas[$venda]->getDate();
             $produtosVendas[$produto]["total_vendido"]            += $vendas[$venda]->getQuantity();

@@ -1,4 +1,11 @@
 services:
+  db:
+    image: postgres
+    restart: always
+    environment:
+      POSTGRES_PASSWORD: exemplo
+    ports:
+      - "8101:5432"
   php:
     build:
       context: /home/imply/CauaProj/Desafio_2/parte2
@@ -9,13 +16,6 @@ services:
       - ./www:/var/www/html
     links: 
       - "db:database"
-  db:
-    image: postgres
-    restart: always
-    environment:
-      POSTGRES_PASSWORD: exemplo
-    ports:
-      - "5432:5432"
 
     
 

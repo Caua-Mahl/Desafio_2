@@ -1,5 +1,4 @@
 
-
 requisição:conter todas as informações necessárias para que qualquer
 requisição que chegue à API possa ser processada.
 
