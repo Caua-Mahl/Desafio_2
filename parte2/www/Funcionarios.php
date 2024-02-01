@@ -18,7 +18,8 @@ class Funcionarios
                       VALUES ('$this->nome', '$this->genero', '$this->idade', '$this->salario')";
         $resultado = pg_query($conexao, $sql); 
         if ($resultado === false) {
-            die("Error: " . pg_last_error());
+            die("Error: " . pg_last_error()
+        );
         }
         echo "$this->nome foi adicionado(a) <br>";
          $this->ultimoIdInserido($conexao);
@@ -31,6 +32,7 @@ class Funcionarios
         if ($resultado === false) {
             die("Error: " . pg_last_error());
         }
+        
         echo "Lista de todos:<br>";
         while ($funcionario = pg_fetch_assoc($resultado)) {
             echo "- id: "      . $funcionario["id"]      . "
@@ -75,9 +77,11 @@ class Funcionarios
     private function ultimoIdInserido($conexao): void {
         $sql       = "SELECT CURRVAL('funcionarios_id_seq')";
         $resultado = pg_query($conexao, $sql);
+
         if ($resultado === false) {
             die("Error: " . pg_last_error());
         }
+
         $ultimoId = pg_fetch_array($resultado);
         $this->id = $ultimoId["currval"];
     }
@@ -86,9 +90,11 @@ class Funcionarios
         $sql       = "UPDATE funcionarios SET nome = '$novoNome' WHERE id = '$this->id'";
         $this->nome = $novoNome;
         $resultado = pg_query($conexao, $sql);
+
         if ($resultado === false) {
             die("Error: " . pg_last_error());
         }
+
         echo "O funcionario $this->id teve seu nome alterado para $this->nome <br><br>";
     }
 

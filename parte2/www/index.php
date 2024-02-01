@@ -40,7 +40,7 @@ echo "<br>";
 
 $funcionario3Id = $funcionario3->getId();
 unset($funcionario3);
-$funcionario3   = new Funcionarios();
+$funcionario3 = new Funcionarios();
 $funcionario3->setId($funcionario3Id);
 $funcionario3->puxarDados($conexao->getConn());
 
