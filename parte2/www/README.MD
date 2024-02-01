@@ -6,3 +6,4 @@ CREATE TABLE public.funcionarios (
     salario numeric(10, 2) NULL,
     CONSTRAINT funcionarios_pkey PRIMARY KEY (id)
 );
+

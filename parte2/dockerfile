@@ -17,3 +17,4 @@ RUN apt-get install -y libpq-dev \
 #netstat -an | grep 5431
 #docker compose up
 #psql -h localhost -p 8101 -U postgres db
+#sudo apt-get install php-pgsql

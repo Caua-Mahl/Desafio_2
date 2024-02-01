@@ -8,17 +8,18 @@ class Funcionarios
     private string $idade;
     private int    $salario;
 
-    public function __construct(string $nome, string $genero, int $idade, int $salario)
+    public function __construct(string $nome, string $genero, int $idade, int $salario, $conexao)
     {
         $this->nome    = $nome;
         $this->genero  = $genero;
         $this->idade   = $idade;
         $this->salario = $salario;
+        $this->criar($conexao);
     }
 
     //CRUD 
 
-    public function criar($conexao): void {
+    private function criar($conexao): void {
         $sql       = "INSERT INTO funcionarios (nome, genero, idade, salario) 
                       VALUES ('$this->nome', '$this->genero', '$this->idade', '$this->salario')";
         $resultado = pg_query($conexao, $sql); 
@@ -48,7 +49,7 @@ class Funcionarios
         }
 
         while ($funcionario = pg_fetch_assoc($resultado)) {
-            echo "id: " . $funcionario["id"] . " - Nome: " . $funcionario["nome"] . " - Genero: " . $funcionario["genero"] . " - Idade: " . $funcionario["idade"] . " - Salario: " . $funcionario["salario"] . "<br>";
+            echo "Lista de todos:<br>id: " . $funcionario["id"] . " - Nome: " . $funcionario["nome"] . " - Genero: " . $funcionario["genero"] . " - Idade: " . $funcionario["idade"] . " - Salario: " . $funcionario["salario"] . "<br>";
         }
     }
 
@@ -60,29 +61,57 @@ class Funcionarios
         }
 
         $funcionario = pg_fetch_assoc($resultado);
-        echo "Você buscou pelo $id e obteve a seguinte resposta:<br>
-        - id: "      . $funcionario["id"]           . " 
-        - Nome: "    . $funcionario["nome"]       . " 
-        - Genero: "  . $funcionario["genero"]   . " 
-        - Idade: "   . $funcionario["idade"]     . " 
+        echo "Você buscou pelo $id e obteve a seguinte resposta: <br>
+        - id: "      . $funcionario["id"]      . " 
+        - Nome: "    . $funcionario["nome"]    . " 
+        - Genero: "  . $funcionario["genero"]  . " 
+        - Idade: "   . $funcionario["idade"]   . " 
         - Salario: " . $funcionario["salario"] . "<br>";
+    }
+
+    public function mudarNome($novoNome, $conexao): void {
+        $sql       = "UPDATE funcionarios SET nome = '$novoNome' WHERE id = '$this->id'";
+        $this->nome = $novoNome;
+        $resultado = pg_query($conexao, $sql);
+        if ($resultado === false) {
+            die("Error: " . pg_last_error());
+        }
+        echo "O funcionario $this->id teve seu nome alterado para $this->nome <br><br>";
+    }
+
+    public function darAumento($aumento, $conexao): void {
+        $aumento        = intval(rtrim($aumento, '%')); // vou receber uma porcentagem, vou cortar o % e transformar em int
+        $this->salario  = $this->salario + ($this->salario * ($aumento / 100)); 
+        $sql            = "UPDATE funcionarios SET salario ='$this->salario' WHERE id = '$this->id'";
+        $this->salario += $this->salario+$aumento;
+        $resultado      = pg_query($conexao, $sql);
+
+        if ($resultado === false) {
+            die("Error: " . pg_last_error());
+        }
+
+        echo "$this->nome recebeu um aumento, agora seu salario é de $this->salario  <br><br>";
     }
 
     public static function deletarTodos($conexao): void {
         $sql       = "DELETE FROM funcionarios";
         $resultado = pg_query($conexao, $sql);
+
         if ($resultado === false) {
             die("Error: " . pg_last_error());
         }
+
         echo "Todos os funcionarios foram deletados <br><br>";
     }
 
     public static function deletarFuncionario($conexao, $id): void {
         $sql       = "DELETE FROM funcionarios WHERE id = '$id'";
         $resultado = pg_query($conexao, $sql);
+
         if ($resultado === false) {
             die("Error: " . pg_last_error());
         }
+
         echo "O funcionario $id foi deletado <br><br>";
     }
 
