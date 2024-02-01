@@ -31,10 +31,6 @@ $funcionario4->mudarNome("Daenerys",$conexao->getConn());
 
 echo "<br>";
 
-Funcionarios::listarTodos($conexao->getConn());
-
-echo "<br>";
-
 $funcionario1->darAumento("200%", $conexao->getConn());
 $funcionario2->darAumento("50%", $conexao->getConn());
 $funcionario3->darAumento("20%", $conexao->getConn());
@@ -45,20 +41,17 @@ echo "<br>";
 Funcionarios::listarTodos($conexao->getConn());
 
 echo "<br>";
-echo "<pre>";
 
-var_dump($funcionario3);
+
+echo "<br>";
+
 $funcionario3Id = $funcionario3->getId();
-echo "<br>";
-
 unset($funcionario3);
-
-echo "<br>";
-$funcionario3= new Funcionarios();
-var_dump($funcionario3);
-echo "<br>";
+$funcionario3   = new Funcionarios();
 $funcionario3->setId($funcionario3Id);
 $funcionario3->puxarDados($conexao->getConn());
+
+echo "<pre>";
 var_dump($funcionario3);
 echo "</pre>";
 
