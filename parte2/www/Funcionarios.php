@@ -35,11 +35,12 @@ class Funcionarios
         
         echo "Lista de todos:<br>";
         while ($funcionario = pg_fetch_assoc($resultado)) {
-            echo "- id: "      . $funcionario["id"]      . "
-                  - Nome: "    . $funcionario["nome"]    . "
-                  - Genero: "  . $funcionario["genero"]  . "
-                  - Idade: "   . $funcionario["idade"]   . "
-                  - Salario: " . $funcionario["salario"] . "<br> <br>";
+            echo "- id: "      . $funcionario["id"]      . 
+                 "- Nome: "    . $funcionario["nome"]    .
+                 "- Genero: "  . $funcionario["genero"]  . 
+                 "- Idade: "   . $funcionario["idade"]   . 
+                 "- Salario: " . $funcionario["salario"] . 
+                 "<br> <br>";
         }
     }
 
