@@ -6,9 +6,11 @@
                 $limit    = 150;
                 $message  = 'Fetched from API.';
                 $response = RequisitorCurl::get("pokemon?limit=$limit");
+
                 $data = array_map(function ($data) {
                     return $data["name"];
                 }, $response['results']);
+                
                 file_put_contents('all.txt', json_encode($data));
             }
         

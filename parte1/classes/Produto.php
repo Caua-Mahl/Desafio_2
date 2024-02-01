@@ -10,7 +10,6 @@ class Produto
         $this->productID = $productID;
         $this->name       = $name;
         $this->price      = $price;
-        //echo "$name criado! <br>";   
     }
 
     public function getProductID()

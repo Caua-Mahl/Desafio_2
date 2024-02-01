@@ -2,37 +2,17 @@
 
 class Funcionarios
 {
-    private int $id;
+    private int    $id;
     private string $nome;
     private string $genero;
     private string $idade;
     private int    $salario;
 
-    /*public function __construct(string $nome, string $genero, int $idade, int $salario, $conexao)
-    {
-        $this->nome    = $nome;
-        $this->genero  = $genero;
-        $this->idade   = $idade;
-        $this->salario = $salario;
-        $this->criar($conexao);
-    }
-
-    private function criar($conexao): void {
-        $sql       = "INSERT INTO funcionarios (nome, genero, idade, salario) 
-                      VALUES ('$this->nome', '$this->genero', '$this->idade', '$this->salario')";
-        $resultado = pg_query($conexao, $sql); 
-        if ($resultado === false) {
-            die("Error: " . pg_last_error());
-        }
-        echo "$this->nome foi adicionado(a) <br>";
-         $this->ultimoIdInserido($conexao);
-    } */
-
     public function criar(string $nome="", string $genero="", int $idade=0, int $salario=0, $conexao): void {
-        $this->nome    = $nome;
-        $this->genero  = $genero;
-        $this->idade   = $idade;
-        $this->salario = $salario;
+        $this->nome     = $nome;
+        $this->genero   = $genero;
+        $this->idade    = $idade;
+        $this->salario  = $salario;
         $this->$conexao = $conexao;
         $sql       = "INSERT INTO funcionarios (nome, genero, idade, salario) 
                       VALUES ('$this->nome', '$this->genero', '$this->idade', '$this->salario')";
@@ -42,16 +22,6 @@ class Funcionarios
         }
         echo "$this->nome foi adicionado(a) <br>";
          $this->ultimoIdInserido($conexao);
-    }
-
-    private function ultimoIdInserido($conexao): void {
-        $sql       = "SELECT CURRVAL('funcionarios_id_seq')";
-        $resultado = pg_query($conexao, $sql);
-        if ($resultado === false) {
-            die("Error: " . pg_last_error());
-        }
-        $ultimoId = pg_fetch_array($resultado);
-        $this->id = $ultimoId["currval"];
     }
 
     public static function listarTodos($conexao): void {
@@ -85,6 +55,31 @@ class Funcionarios
         - Genero: "    . $funcionario["genero"]  . " 
         - Idade: "     . $funcionario["idade"]   . " 
         - Salario: R$" . $funcionario["salario"] . "<br>";
+    }
+
+    public function puxarDados($conexao): void {
+        $sql       = "SELECT * FROM funcionarios WHERE id = '$this->id'";
+        $resultado = pg_query($conexao, $sql);
+
+        if ($resultado === false) {
+            die("Error: " . pg_last_error());
+        }
+
+        $funcionario = pg_fetch_assoc($resultado);
+        $this->nome    = $funcionario["nome"];
+        $this->genero  = $funcionario["genero"];
+        $this->idade   = $funcionario["idade"];
+        $this->salario = $funcionario["salario"];
+    }
+
+    private function ultimoIdInserido($conexao): void {
+        $sql       = "SELECT CURRVAL('funcionarios_id_seq')";
+        $resultado = pg_query($conexao, $sql);
+        if ($resultado === false) {
+            die("Error: " . pg_last_error());
+        }
+        $ultimoId = pg_fetch_array($resultado);
+        $this->id = $ultimoId["currval"];
     }
 
     public function mudarNome($novoNome, $conexao): void {
@@ -132,21 +127,6 @@ class Funcionarios
         echo "O funcionario $id foi deletado <br><br>";
     }
 
-    public function puxarDados($conexao): void {
-        $sql       = "SELECT * FROM funcionarios WHERE id = '$this->id'";
-        $resultado = pg_query($conexao, $sql);
-
-        if ($resultado === false) {
-            die("Error: " . pg_last_error());
-        }
-
-        $funcionario = pg_fetch_assoc($resultado);
-        $this->nome    = $funcionario["nome"];
-        $this->genero  = $funcionario["genero"];
-        $this->idade   = $funcionario["idade"];
-        $this->salario = $funcionario["salario"];
-    }
-    
     public function getId(): string
     {
         return $this->id;

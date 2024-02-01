@@ -1,6 +1,5 @@
 <?php
 
-//biblioteca email
 require 'vendor/autoload.php';
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\Exception;
@@ -14,6 +13,7 @@ require 'classes/LeitorVendas.php';
 require 'classes/Venda.php';
 require 'classes/Produto.php';
 
+$mensagem    = readline("digite uma mensagem:");
 $produtosCsv = fopen('csv/products.csv', "r");
 $produtos    = new LeitorProdutos($produtosCsv);
 $produtos    = $produtos->getProdutos();
@@ -26,13 +26,12 @@ $produtosVendas = array();
 $novoCsv        = fopen('csv/products_orders.csv', "w");
 
 for ($produto = 0; $produto < count($produtos); $produto++) {
-    $produtosVendas[$produto]["total_vendido"] = 0; // declarei antes pois vai ser somado depois
-    $produtosVendas[$produto]["Data_ultima_venda"][0]=0;
+    $produtosVendas[$produto]["total_vendido"]        = 0;
+    $produtosVendas[$produto]["Data_ultima_venda"][0] = 0;
+
     for ($venda = 0; $venda < count($vendas); $venda++) {
         if ($vendas[$venda]->getProductID() == $produtos[$produto]->getProductID()) {
-            //ID do produto, preço unitário, data da última venda, quantidade total vendida e valor total vendido
             $produtosVendas[$produto]["product_ID"]                = $produtos[$produto]->getProductID();
-            //$produtosVendas[$produto]["nome"]                    = $produtos[$produto]->getName();
             $produtosVendas[$produto]["preço_unitario"]            = $produtos[$produto]->getPrice();
             $produtosVendas[$produto]["Data_ultima_venda"][$venda] = $vendas[$venda]->getDate();
             $produtosVendas[$produto]["total_vendido"]            += $vendas[$venda]->getQuantity();
@@ -40,9 +39,8 @@ for ($produto = 0; $produto < count($produtos); $produto++) {
         }
     }
 
-    //pegar ultima venda e devolver tambem os produtos sem vendas
-    $produtosVendas[$produto]["Data_ultima_venda"] = max($produtosVendas[$produto]["Data_ultima_venda"]); //max retorna a data mais recente
-    if ($produtosVendas[$produto]["Data_ultima_venda"]   == 0) {
+    $produtosVendas[$produto]["Data_ultima_venda"] = max($produtosVendas[$produto]["Data_ultima_venda"]);
+    if ($produtosVendas[$produto]["Data_ultima_venda"]  == 0) {
         $produtosVendas[$produto]["Data_ultima_venda"]   = 0;
         $produtosVendas[$produto]["product_ID"]          = $produtos[$produto]->getProductID();
         $produtosVendas[$produto]["preço_unitario"]      = $produtos[$produto]->getPrice();
@@ -51,34 +49,31 @@ for ($produto = 0; $produto < count($produtos); $produto++) {
     }
 }
 
-//imprimindo linhas
-fputcsv($novoCsv, array_keys($produtosVendas[0])); //cabeçalho
+fputcsv($novoCsv, array_keys($produtosVendas[0]));
 fputcsv($novoCsv, array());
 foreach ($produtosVendas as $linha) {
     fputcsv($novoCsv, $linha);
 }
 
-//enviando csv para o gmail
 $mail             = new PHPMailer(true);
-$mail->isSMTP();    //Devine o uso de SMTP no envio
-$mail->SMTPAuth   = true; //Habilita a autenticação SMTP
+$mail->isSMTP();    
+$mail->SMTPAuth   = true;
 $mail->Username   = 'testecauam@gmail.com';
 $mail->Password   = 'djow udyr trvo etew ';
-$mail->SMTPSecure = 'tls'; // Criptografia do envio SSL também é aceito
-$mail->Host       = 'smtp.gmail.com'; // Informações específicadas pelo Google
+$mail->SMTPSecure = 'tls';
+$mail->Host       = 'smtp.gmail.com';
 $mail->Port       = 587;
 
-// Define o remetente e destinatário
 $mail->setFrom('testecauam@gmail.com', 'Caua');
 $mail->addAddress('testecauam@gmail.com', 'Caua');
 
-// Conteúdo da mensagem
 $mail->Subject = 'Desafio2';
-$mail->Body    = 'Eai';
+$mail->Body    = $mensagem;
 $mail->AddAttachment( 'csv/products_orders.csv' , 'file.csv' );
 $mail->send();
 
-//fechando arquivos
+echo "o email foi enviado \n";
+
 fclose($novoCsv);
 fclose($vendasCsv);
 fclose($produtosCsv);

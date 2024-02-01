@@ -12,7 +12,6 @@ class Venda
         $this->productID = $productID;
         $this->date       = $date;
         $this->quantity   = $quantity;
-        //echo "Venda criada! <br>";   
     }
 
     public function getOrderID(): string

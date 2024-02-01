@@ -9,7 +9,7 @@ class LeitorVendas
         while (($dados = fgetcsv($vendascsv, 1000, ",")) !== FALSE) {
             $linhas[]  = $dados;
         }
-        array_shift($linhas); // tirar o cabeçalho
+        array_shift($linhas); 
         foreach ($linhas as $linha) {
             $this->vendas[] = new Venda($linha[0], $linha[1], $linha[2], $linha[3]);
         }
