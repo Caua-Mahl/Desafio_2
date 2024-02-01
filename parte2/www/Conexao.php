@@ -27,7 +27,7 @@
     public function desconectar(): void
     {
         pg_close($this->conn) or die("Nao foi possivel desconectar ao Banco de Dados  <br><br>");
-        echo "Desconecção bem sucedida";
+        echo "<br> Desconecção bem sucedida";
     }
 
     public function getConn()
