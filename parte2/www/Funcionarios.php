@@ -1,7 +1,6 @@
 <?php
 
-class Funcionarios
-{
+class Funcionarios {
     private int    $id;
     private string $nome;
     private string $genero;
@@ -14,9 +13,12 @@ class Funcionarios
         $this->idade    = $idade;
         $this->salario  = $salario;
         $this->$conexao = $conexao;
-        $sql       = "INSERT INTO funcionarios (nome, genero, idade, salario) 
-                      VALUES ('$this->nome', '$this->genero', '$this->idade', '$this->salario')";
+
+        $sql = "INSERT INTO funcionarios (nome, genero, idade, salario) 
+                VALUES ('$this->nome', '$this->genero', '$this->idade', '$this->salario')";
+
         $resultado = pg_query($conexao, $sql); 
+
         if ($resultado === false) {
             die("Error: " . pg_last_error()
         );
@@ -100,7 +102,7 @@ class Funcionarios
     }
 
     public function darAumento($aumento, $conexao): void {
-        $aumento        = intval(rtrim($aumento, '%')); // vou receber uma porcentagem, vou cortar o % e transformar em int
+        $aumento        = intval(rtrim($aumento, '%'));
         $this->salario  = $this->salario + ($this->salario * ($aumento / 100)); 
         $sql            = "UPDATE funcionarios SET salario ='$this->salario' WHERE id = '$this->id'";
         $resultado      = pg_query($conexao, $sql);
