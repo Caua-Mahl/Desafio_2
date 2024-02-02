@@ -1,30 +1,33 @@
 <?php
 
 class Funcionarios {
-    private int    $id;
+    private        $id;
     private string $nome;
     private string $genero;
     private string $idade;
     private int    $salario;
+    private        $conexao;
 
-    public function criar(string $nome="", string $genero="", int $idade=0, int $salario=0, $conexao): void {
-        $this->nome     = $nome;
-        $this->genero   = $genero;
-        $this->idade    = $idade;
-        $this->salario  = $salario;
-        $this->$conexao = $conexao;
-
+    public function __construct(string $nome="", string $genero="", int $idade=0, int $salario=0, $conexao=null , $id=null) {
+        $this->nome    = $nome;
+        $this->genero  = $genero;
+        $this->idade   = $idade;
+        $this->salario = $salario;
+        $this->conexao = $conexao;
+        $this->id      = $id;
+    }
+    public function criar(): void {
         $sql = "INSERT INTO funcionarios (nome, genero, idade, salario) 
                 VALUES ('$this->nome', '$this->genero', '$this->idade', '$this->salario')";
 
-        $resultado = pg_query($conexao, $sql); 
+        $resultado = pg_query($this->conexao, $sql); 
 
         if ($resultado === false) {
             die("Error: " . pg_last_error()
         );
         }
         echo "$this->nome foi adicionado(a) <br>";
-         $this->ultimoIdInserido($conexao);
+        $this->ultimoIdInserido($this->conexao);
     }
 
     public static function listarTodos($conexao): void {
@@ -62,8 +65,8 @@ class Funcionarios {
         - Salario: R$" . $funcionario["salario"] . "<br>";
     }
 
-    public function puxarDados($conexao): void {
-        $sql       = "SELECT * FROM funcionarios WHERE id = '$this->id'";
+    public static function puxarDados($id, $conexao) {
+        $sql       = "SELECT * FROM funcionarios WHERE id = '$id'";
         $resultado = pg_query($conexao, $sql);
 
         if ($resultado === false) {
@@ -71,10 +74,7 @@ class Funcionarios {
         }
 
         $funcionario = pg_fetch_assoc($resultado);
-        $this->nome    = $funcionario["nome"];
-        $this->genero  = $funcionario["genero"];
-        $this->idade   = $funcionario["idade"];
-        $this->salario = $funcionario["salario"];
+        return new Funcionarios($funcionario["nome"], $funcionario["genero"], $funcionario["idade"], $funcionario["salario"], $conexao, $id);
     }
 
     private function ultimoIdInserido($conexao): void {
@@ -89,10 +89,10 @@ class Funcionarios {
         $this->id = $ultimoId["currval"];
     }
 
-    public function mudarNome($novoNome, $conexao): void {
-        $sql       = "UPDATE funcionarios SET nome = '$novoNome' WHERE id = '$this->id'";
+    public function mudarNome($novoNome): void {
+        $sql        = "UPDATE funcionarios SET nome = '$novoNome' WHERE id = '$this->id'";
         $this->nome = $novoNome;
-        $resultado = pg_query($conexao, $sql);
+        $resultado  = pg_query($this->conexao, $sql);
 
         if ($resultado === false) {
             die("Error: " . pg_last_error());
@@ -101,11 +101,11 @@ class Funcionarios {
         echo "O funcionario $this->id teve seu nome alterado para $this->nome <br><br>";
     }
 
-    public function darAumento($aumento, $conexao): void {
+    public function darAumento($aumento): void {
         $aumento        = intval(rtrim($aumento, '%'));
         $this->salario  = $this->salario + ($this->salario * ($aumento / 100)); 
         $sql            = "UPDATE funcionarios SET salario ='$this->salario' WHERE id = '$this->id'";
-        $resultado      = pg_query($conexao, $sql);
+        $resultado      = pg_query($this->conexao, $sql);
 
         if ($resultado === false) {
             die("Error: " . pg_last_error());
